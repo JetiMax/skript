@@ -1,0 +1,756 @@
+{
+	"info": {
+		"_postman_id": "c6d1fa97-2052-4964-8a9d-0dc6e8143ad0",
+		"name": "Variables demo",
+		"description": "Демо запросы в которых используются разные типы переменных. Запросы сгруппированы по папкам. В каждой папке собраны примеры запросы по применению конкретных типов переменных.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Using variables in requests",
+			"item": [
+				{
+					"name": "/app/pets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serverIP}}/app/pets",
+							"host": [
+								"{{serverIP}}"
+							],
+							"path": [
+								"app",
+								"pets"
+							]
+						},
+						"description": "Запрос к домашней странице Дома питомца, использующий Global variable"
+					},
+					"response": []
+				},
+				{
+					"name": "/app/about",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serverAddress}}/app/about",
+							"host": [
+								"{{serverAddress}}"
+							],
+							"path": [
+								"app",
+								"about"
+							]
+						},
+						"description": "Запрос использующий переменную коллекции"
+					},
+					"response": []
+				},
+				{
+					"name": "/app/contact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serverIPAddress}}/app/contact",
+							"host": [
+								"{{serverIPAddress}}"
+							],
+							"path": [
+								"app",
+								"contact"
+							]
+						},
+						"description": "Запрос к странице контактов с использованием переменной окружения. Не забудьте выбрать окружение \"Дом питомца\" в паравом верхнем углу приложения."
+					},
+					"response": []
+				}
+			],
+			"description": "Демонстрация использования глобальных переменных, локальных переменных и переменных окружения на примере адреса сервера в запросах",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "dce58267-d6ac-4338-bfc3-5d4d8ce70c00",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "734c6627-7215-4f56-b015-e90bf7d54943",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "get and set methods to manage global variables",
+			"item": [
+				{
+					"name": "/api/key",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "99aac2f4-1a27-4c93-b954-724f0e04745f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "2a007440-2780-4617-925a-c21ee68b0a55",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"// Устанавливаем глобальную переменную. Ее можно даже предварительно не прописывать в разделе Globals",
+									"pm.globals.set(\"apikey\",jsonData.key);",
+									"// Выводим глобальную переменную \"apikey\" в консоль.",
+									"console.log(\"apikey \"+pm.globals.get(\"apikey\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "email",
+								"value": "{{email}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{pass}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{serverURL}}/api/key",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"key"
+							]
+						},
+						"description": "Получить API key и инициализировать им глобальную переменную."
+					},
+					"response": []
+				},
+				{
+					"name": "/api/pets",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_key",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{serverURL}}/api/pets",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets"
+							]
+						},
+						"description": "Получить список животных. APIkey - глобальная переменная, передаваемая в заголовке."
+					},
+					"response": []
+				}
+			],
+			"description": "Использование get и set методов в скриптах тестов Postman для работы с разными типами переменных.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ea85641b-fde7-46a6-87ec-fc9d71305bf5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4791fa6f-c9fb-451c-a7ef-e93a339eec68",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "set and unset methods for global variables",
+			"item": [
+				{
+					"name": "/api/key",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9025d27c-4c91-4d8b-8368-bfaf0a809dd5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e282e3dc-d0a1-4cb0-80c2-24ae1276169a",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.globals.set(\"apikey\",jsonData.key);",
+									"if(pm.globals.has(\"apikey\")==true){",
+									"    console.log(\"apikey установлена \"+pm.globals.get(\"apikey\")); // apikey появилась в Globals",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "email",
+								"value": "{{email}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{pass}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{serverURL}}/api/key",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"key"
+							]
+						},
+						"description": "Получить API key и инициализировать им глобальную переменную."
+					},
+					"response": []
+				},
+				{
+					"name": "/api/pets",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_key",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{serverURL}}/api/pets?filter=my_pets",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "my_pets"
+								}
+							]
+						},
+						"description": "Получить список животных. APIkey - глобальная переменная, передаваемая в заголовке."
+					},
+					"response": []
+				},
+				{
+					"name": "/api/pets add a pet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "577abdcd-40ef-4c72-8e1f-b7eb3bf615fc",
+								"exec": [
+									"pm.globals.unset(\"apikey\"); //Удаление \"apikey\"",
+									"if(pm.globals.has(\"apikey\")==false){ //метод has проверяет наличие переменной \"apikey\"",
+									"    console.log(\"apikey variable doesn't exist\"); //Проверяем, что переменная удалена. Можете проверить в Globals",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "auth_key",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{petName}}",
+									"type": "text"
+								},
+								{
+									"key": "animal_type",
+									"value": "{{petType}}",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "{{petAge}}",
+									"type": "text"
+								},
+								{
+									"key": "pet_photo",
+									"type": "file",
+									"src": "/home/konstantin/Downloads/dog02.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serverURL}}/api/pets",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets"
+							]
+						},
+						"description": "Добавить питомца."
+					},
+					"response": []
+				}
+			],
+			"description": "Если запустить целый сценарий из запросов папки, то первый запрос установит глобальную переменную apikey, последующие будут ее использовать, а последний удалит. Замените переменные email и pass на свои, чтобы работать со своим apikey.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "get set and unset methods for collection variables",
+			"item": [
+				{
+					"name": "/api/key",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6bc955e7-b478-4d9c-94ca-f572e353a741",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "56c26e4a-21a1-48c5-8ab4-5a3b8f8937dd",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.globals.set(\"apikey\",jsonData.key);",
+									"if(pm.globals.has(\"apikey\")==true){",
+									"    console.log(\"apikey установлена \"+pm.globals.get(\"apikey\")); // apikey появилась в Globals",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "email",
+								"value": "{{email}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{pass}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{serverURL}}/api/key",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"key"
+							]
+						},
+						"description": "Получить API key и инициализировать им глобальную переменную."
+					},
+					"response": []
+				},
+				{
+					"name": "/api/pets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6bea26bd-b467-4f63-bbf3-92eb42976d42",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set(\"petID\", jsonData.pets[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth_key",
+								"type": "text",
+								"value": "{{apikey}}"
+							}
+						],
+						"url": {
+							"raw": "{{serverURL}}/api/pets?filter=my_pets",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "my_pets"
+								}
+							]
+						},
+						"description": "Получить список свох животных. APIkey - глобальная переменная, передаваемая в заголовке. Первое животное из списка будем менять, а потом удалять. Создается переменная коллекции petID."
+					},
+					"response": []
+				},
+				{
+					"name": "/api/pets",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "auth_key",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Jason\",\n    \"animal_type\":\"shephard\",\n    \"age\":\"4\"\n}"
+						},
+						"url": {
+							"raw": "{{serverURL}}/api/pets/{{petID}}",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets",
+								"{{petID}}"
+							]
+						},
+						"description": "Изменить данные питомца с petId"
+					},
+					"response": []
+				},
+				{
+					"name": "/apipets",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "09a5725b-c00d-4a64-85b5-b3a124cb160a",
+								"exec": [
+									"pm.collectionVariables.unset(\"petID\");",
+									"if(pm.collectionVariables.has(\"petID\")==false){",
+									"    console.log(\"petID variable doesn't exist\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "auth_key",
+								"value": "{{apikey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{serverURL}}/api/pets/{{petID}}",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets",
+								"{{petID}}"
+							]
+						},
+						"description": "Удаляет питомца с petID и удаляет переменную petID из коллекции"
+					},
+					"response": []
+				}
+			],
+			"description": "Эти несколько запросов демонстрируют установку, получение и удаление переменной коллекции \"petID\"",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Dynamic variables ",
+			"item": [
+				{
+					"name": "/api/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "pass",
+									"value": "{{pass}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serverURL}}/login",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Авторизация в системе"
+					},
+					"response": []
+				},
+				{
+					"name": "/api/pets",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "{{$randomInt}}",
+									"type": "text"
+								},
+								{
+									"key": "animal_type",
+									"value": "Dog",
+									"type": "text"
+								},
+								{
+									"key": "pet_photo",
+									"type": "file",
+									"src": "/home/konstantin/Downloads/dog01.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serverURL}}/api/pets",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets"
+							]
+						},
+						"description": "Создание питомца со случайными параметрами, переданными в параметре формы."
+					},
+					"response": []
+				},
+				{
+					"name": "/api/pets",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4a4e424e-ad05-4f1b-ba5b-64273327bd05",
+								"exec": [
+									"pm.collectionVariables.set(\"petName\", pm.variables.replaceIn(\"{{$randomFirstName}}\"));",
+									"pm.collectionVariables.set(\"petAge\", pm.variables.replaceIn(\"{{$randomInt}}\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "84d222a7-b6e9-4410-b305-de4b716be98d",
+								"exec": [
+									"pm.test(\"Test for the pet with the created name in the response text\", function(){",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"petName\"));",
+									"});",
+									"pm.test(\"Test for the pet with the created age in the response text\", function(){",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get(\"petAge\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "{{petName}}",
+									"type": "text"
+								},
+								{
+									"key": "age",
+									"value": "{{petAge}}",
+									"type": "text"
+								},
+								{
+									"key": "animal_type",
+									"value": "Dog",
+									"type": "text"
+								},
+								{
+									"key": "pet_photo",
+									"type": "file",
+									"src": "/home/konstantin/Downloads/dog01.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serverURL}}/api/pets",
+							"host": [
+								"{{serverURL}}"
+							],
+							"path": [
+								"api",
+								"pets"
+							]
+						},
+						"description": "Создание питомца со случайными параметрами, переданными в параметре формы."
+					},
+					"response": []
+				}
+			],
+			"description": "В данной папке приведены примеры скриптов использующих динамические (случайные) переменные. Можно запускать в collection runner всю папку с запросами целиком, а можно запускать каждый из запросов отдельно. Но первым должен идти первый запрос на авторизацию.",
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "24985fa6-509e-40d2-9fcc-b6cb49d82db8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c65ee597-0460-4379-af7f-f3f976dbf187",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0cdb2cb9-ad6c-4adb-8568-5ed655e4ff05",
+			"key": "serverAddress",
+			"value": "130.193.37.179"
+		},
+		{
+			"id": "77ee1fbe-6e72-46a6-bd31-0e52f9be44b4",
+			"key": "serverURL",
+			"value": "https://petfriends1.herokuapp.com"
+		},
+		{
+			"id": "9e51ca9d-afa7-4128-9d61-bf007eb25f66",
+			"key": "petName",
+			"value": "Bars"
+		},
+		{
+			"id": "cd74d040-9eeb-40e7-830d-e015dc2f9b6a",
+			"key": "petType",
+			"value": "Boxer"
+		},
+		{
+			"id": "06346a59-6ebe-422b-9e30-389d53e045e8",
+			"key": "petAge",
+			"value": "3"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
